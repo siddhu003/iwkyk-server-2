@@ -21,13 +21,39 @@ app.get('/', (req, res) => {
 })
 
 app.use('/user', userRoutes)
+// app.use('/forgot-password',userRoutes)
 app.use('/questions', questionRoutes)
-app.use('/answer',answerRoutes)
+app.use('/answer', answerRoutes)
+
+app.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+
+    try {
+        const oldUser = await users.findOne({ email });
+
+        if (!oldUser)
+        {
+            return res.status(404).json({message:"User doesn't exist."})
+        }
+
+        const secret = JWT_SECRET + oldUser.password;
+        const token = jwt.login({ email: oldUser.email, id: oldUser._id }, secret, { expiresIn: '5m' });
+
+        // const link = `https://stack-overflow.herokuapp.com/reset-password/${oldUser._id}/${token}`;
+        // console.log(link)
+
+    } catch (error) {
+        res.status(500).json("Something went wrong.....")
+    }
+})
 
 const PORT = process.env.PORT || 5000
 
-const DATABASE_URL = process.env.CONNECTION_URL
+//const DATABASE_URL = process.env.CONNECTION_URL
 // const DATABASE_URL = "mongodb+srv://siddharth:03032003Sa!@stackoverflowclone.tebpkpo.mongodb.net/?retryWrites=true&w=majority"
+
+//IWKYK
+const DATABASE_URL= "mongodb+srv://120cs0033:03032003@iwkyk.qei81fr.mongodb.net/?retryWrites=true&w=majority"
 
 mongoose.connect(DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => app.listen(PORT, () => { console.log(`server running on port ${PORT}`) }))
