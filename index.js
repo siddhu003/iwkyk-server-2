@@ -50,7 +50,6 @@ app.post("/forgot-password", async (req, res) => {
 const PORT = process.env.PORT || 5000
 
 //const DATABASE_URL = process.env.CONNECTION_URL
-// const DATABASE_URL = "mongodb+srv://siddharth:03032003Sa!@stackoverflowclone.tebpkpo.mongodb.net/?retryWrites=true&w=majority"
 
 //IWKYK
 const DATABASE_URL
